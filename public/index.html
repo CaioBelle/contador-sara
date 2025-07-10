@@ -36,9 +36,15 @@
 <body>
   <h1>Vezes que a Sara foi confundida como brasileira e eu não</h1>
   <div id="counter">...</div>
-  <button onclick="increment()">Mais uma vez!</button>
+
+  <div id="controls" style="display: none;">
+    <button onclick="increment()">Mais uma vez!</button>
+  </div>
 
   <script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
     async function update() {
       const res = await fetch('/count');
       const { count } = await res.json();
@@ -46,9 +52,18 @@
     }
 
     async function increment() {
-      const res = await fetch('/increment', { method: 'POST' });
+      const res = await fetch('/increment', {
+        method: 'POST',
+        headers: {
+          'Authorization': token || ''
+        }
+      });
       const { count } = await res.json();
       document.getElementById('counter').innerText = count;
+    }
+
+    if (token === 'blupblupblup') {
+      document.getElementById('controls').style.display = 'block';
     }
 
     update();
