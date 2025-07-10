@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Vezes que a Sara foi confundida</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 40px;
+      background-color: #f7f7f7;
+    }
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+    }
+    #counter {
+      font-size: 4em;
+      color: #009688;
+      margin: 20px 0;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      background: #009688;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00796b;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vezes que a Sara foi confundida como brasileira e eu não</h1>
+  <div id="counter">...</div>
+  <button onclick="increment()">Mais uma vez!</button>
+
+  <script>
+    async function update() {
+      const res = await fetch('/count');
+      const { count } = await res.json();
+      document.getElementById('counter').innerText = count;
+    }
+
+    async function increment() {
+      const res = await fetch('/increment', { method: 'POST' });
+      const { count } = await res.json();
+      document.getElementById('counter').innerText = count;
+    }
+
+    update();
+    setInterval(update, 5000);
+  </script>
+</body>
+</html>
