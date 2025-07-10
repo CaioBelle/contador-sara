@@ -15,6 +15,11 @@ app.get('/count', (req, res) => {
 });
 
 app.post('/increment', (req, res) => {
+  const auth = req.headers.authorization;
+  if (auth !== 'blupblupblup') {
+    return res.status(403).json({ error: 'Acesso negado' });
+  }
+
   const data = JSON.parse(fs.readFileSync(DATA_FILE));
   data.count++;
   fs.writeFileSync(DATA_FILE, JSON.stringify(data));
